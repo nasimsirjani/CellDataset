@@ -19,10 +19,6 @@ jobs:
         working-directory: .
         continue-on-error: false
 
-      - name: Debugging Step
-        run: |
-          echo "Build step was successful: ${{ success() }}"
-
       - name: Archive results
         uses: actions/upload-artifact@v2
         with:
