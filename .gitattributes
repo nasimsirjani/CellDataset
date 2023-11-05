@@ -1,2 +1,4 @@
 models/*.pth filter=lfs diff=lfs merge=lfs -text
 *.pth filter=lfs diff=lfs merge=lfs -text
+models/maskrcnn_eca-resnet50_fpn_2023-11-05_18-29-31.pth filter=lfs diff=lfs merge=lfs -text
+models/maskrcnn_se-resnet50_fpn_2023-11-05_18-53-38.pth filter=lfs diff=lfs merge=lfs -text
