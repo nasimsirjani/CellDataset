@@ -1,13 +1,11 @@
-name: CI/CD
+name: CICD
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   Build:
-    runs-on: ubuntu-22-04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,52 +24,28 @@ jobs:
           path: ./
 
 
-#  Stage:
-#    runs-on: ubuntu-latest
-#    needs: Build
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Check permissions
-#        run: |
-#          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
-#          find $GITHUB_WORKSPACE -type d -exec chmod 755 {} \;
-#          find $GITHUB_WORKSPACE -type f -exec chmod 644 {} \;
-#
-#      - name: Download artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: training-results
-#          path: ./
-#
-#      - name: Stage
-#        run: |
-#          docker-compose -f docker-compose-app.yaml up --build -d
-#        working-directory: .
-#
-#      - name: Debugging info
-#        run: |
-#          echo "Check the logs of the container:"
-#          docker logs classification_panguin_dataset_web_1
-#          echo "Sleeping for 10 seconds for the application to initialize..."
-#          sleep 10
-#
-#      - name: Check the application
-#        run: |
-#          curl -X POST http://localhost:8080/predict \
-#          -d "body_mass=4200" \
-#          -d "culmen_depth=13.9" \
-#          -d "culmen_length=45.5" \
-#          -d "flipper_length=210" \
-#          -d "female=1" \
-#          -d "male=0" \
-#          -d "biscoe=1" \
-#          -d "dream=0" \
-#          -d "torgersen=0"
+  Stage:
+    runs-on: ubuntu-latest
+    needs: Build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
+      - name: Stage
+        run: |
+          docker-compose -f docker-compose-app.yaml up --build -d
+        working-directory: .
 
+      - name: Debugging info
+        run: |
+          echo "Check the logs of the container:"
+          docker logs celldataset_training_web_1
+          echo "Sleeping for 10 seconds for the application to initialize..."
+          sleep 10
 
+      - name: Check the application
+        run: |
+          curl -X POST http://localhost:8080/predict -F "image=@/data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif"
 
 
 
