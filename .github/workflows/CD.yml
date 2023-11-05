@@ -1,7 +1,13 @@
 name: CD
 
 on:
+<<<<<<< HEAD
   workflow_dispatch:
+=======
+  push:
+    branches:
+      - master
+>>>>>>> c7f4100d6eede2942900cdc4d645d75fabf2f76d
 
 jobs:
   Stage:
@@ -22,10 +28,13 @@ jobs:
           echo "Sleeping for 10 seconds for the application to initialize..."
           sleep 10
 
+<<<<<<< HEAD
       - name: Check the application
         run: |
           curl -X POST http://localhost:8080/predict -F "image=@/data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif"
 
+=======
+>>>>>>> c7f4100d6eede2942900cdc4d645d75fabf2f76d
       - name: containers
         run: docker ps -a
         
@@ -36,4 +45,7 @@ jobs:
         run: |
           curl -X POST http://localhost:8080/predict -F "image=@data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c7f4100d6eede2942900cdc4d645d75fabf2f76d
