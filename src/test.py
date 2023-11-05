@@ -42,6 +42,7 @@ def get_transform(train):
     # Combine all the transformations into a single Compose transformation.
     return T.Compose(transforms)
 
+
 def get_model_instance_segmentation(num_classes, name):
     """
     Create an instance segmentation model with a specified backbone architecture.
