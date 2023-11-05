@@ -1,9 +1,17 @@
 FROM python:3.8-slim-buster
 
 # Increase shared memory limit
-RUN sysctl -w kernel.shmmax=134217728
+# Set kernel parameters using echo
+RUN echo 'kernel.shmmax = 134217728' > /etc/sysctl.conf
 
-RUN sysctl -w kernel.shmall=134217728
+# Apply the changes
+RUN sysctl -p
+
+# Set kernel parameters using echo
+RUN echo 'kernel.shmall = 134217728' > /etc/sysctl.conf
+
+# Apply the changes
+RUN sysctl -p
 
 RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0
 
