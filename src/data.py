@@ -14,6 +14,7 @@ class CellDataset(torch.utils.data.Dataset):
         self.root = root
         self.transforms = transforms
         self.images_dir = os.path.join(root, 'images', stage)
+        self.desired_size = (224, 224)
 
         # Load JSON files
         json_file = os.path.join(root, f'{stage}.json')
@@ -22,7 +23,6 @@ class CellDataset(torch.utils.data.Dataset):
 
     def create_mask(self, image_info, annotations):
         mask = np.zeros((image_info['height'], image_info['width']), dtype=np.uint8)
-        # boxes = []
         object_id = 1
         for annotation in annotations:
             try:
@@ -42,10 +42,6 @@ class CellDataset(torch.utils.data.Dataset):
                         # Draw the polygon on the image
                         cv2.fillPoly(mask, [points], (object_id))  # (0, 255, 0) is the color in BGR format
                         object_id += 1
-
-                    # bbox = annotation['bbox']
-                    # x, y, width, height = map(int, bbox)
-                    # boxes.append([x, y, x + width, y + height])
             except:
                 continue
 
@@ -59,10 +55,14 @@ class CellDataset(torch.utils.data.Dataset):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         mask = self.create_mask(image_info, self.data['annotations'])
 
+        # Resize the image and mask
+        img = cv2.resize(img, self.desired_size)
+        mask = cv2.resize(mask, self.desired_size,
+                          interpolation=cv2.INTER_NEAREST)
+
         # Convert image and mask to PyTorch tensors
         img = torch.from_numpy(img).permute(2, 0, 1)
         mask = torch.from_numpy(mask)
-        # boxes = torch.from_numpy(boxes).to(torch.float32)
 
         # instances are encoded as different colors
         obj_ids = torch.unique(mask)
