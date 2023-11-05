@@ -23,7 +23,10 @@ jobs:
           docker logs celldataset_web_1
           echo "Sleeping for 10 seconds for the application to initialize..."
           sleep 10
-
+          
+      - name: directory
+        run: ls -l data/images/test
+        
       - name: Check the application
         run: |
           curl -X POST http://localhost:8080/predict -F "image=@/app/data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif"
