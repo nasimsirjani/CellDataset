@@ -10,7 +10,11 @@ WORKDIR /app
 
 COPY . /app
 
+<<<<<<< HEAD
 CMD ["python", "src/test.py"]
+=======
+CMD ["python", "src/test/test.py"]
+>>>>>>> c7f4100d6eede2942900cdc4d645d75fabf2f76d
 
 
 

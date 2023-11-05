@@ -5,16 +5,18 @@ import os
 import random
 import json
 import numpy as np
+from io import BytesIO
+import base64
 import matplotlib.pyplot as plt
+import torchvision
 from ECAResnet50 import eca_resnet50
 from SEResnet50 import se_resnet50
-import torchvision
 from torchvision.transforms import v2 as T
 from torchvision.models.detection import MaskRCNN
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
-import base64
+
 
 def get_transform(train):
     """
@@ -58,7 +60,7 @@ def get_model_instance_segmentation(num_classes, name):
     """
     if name == 'maskrcnn_resnet50_fpn':
         # Create a Mask R-CNN model with ResNet-50 backbone and FPN.
-        model = torchvision.models.detection.maskrcnn_resnet50_fpn()
+        model = torchvision.models.detection.maskrcnn_resnet50_fpn(weights="DEFAULT")
 
         # get the number of input features for the classifier
         in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -126,7 +128,8 @@ app = Flask(__name__)
 # Define the path to the checkpoint file
 checkpoint_file = 'models/maskrcnn_resnet50_fpn_2023-11-05_17-13-41.pth'
 
-model = get_model_instance_segmentation(name='maskrcnn_resnet50_fpn', num_classes=2)
+model = get_model_instance_segmentation(name='maskrcnn_resnet50_fpn', num_classes=2)  # Adjust name and num_classes
+# Ensure the model is loaded on the CPU if no GPU is available
 if not torch.cuda.is_available():
     model.load_state_dict(torch.load(checkpoint_file, map_location=torch.device('cpu')))
 else:
@@ -134,7 +137,7 @@ else:
 model.eval()
 
 def process_image(image):
-    # try:
+    try:
         image = torch.from_numpy(image).permute(2, 0, 1)
         eval_transform = get_transform(train=False)
         with torch.no_grad():
@@ -150,8 +153,8 @@ def process_image(image):
         output_image = draw_segmentation_masks(image, masks, alpha=0.5, colors="blue")
 
         return output_image
-    # except Exception as e:
-    #     return None
+    except Exception as e:
+        return None
 
 
 @app.route("/")
@@ -161,7 +164,7 @@ def index():
 
 @app.route("/process_image", methods=["POST"])
 def process_image_route():
-    # try:
+    try:
         # Extract image data from the POST request
         image_data = request.files["image"]
         image = cv2.imdecode(np.fromstring(image_data.read(), np.uint8), cv2.IMREAD_COLOR)
@@ -169,19 +172,17 @@ def process_image_route():
         # Perform image processing using your existing code here...
         result_image = process_image(image)
 
-
         if result_image is not None:
-            result_image_np = result_image.permute(1, 2, 0).numpy().astype(np.uint8)
-
-            # Convert the result to a base64-encoded image (JPEG format)
-            _, buffer = cv2.imencode(".jpg", result_image_np)
+            result_image = result_image.permute(1, 2, 0).numpy().astype(np.uint8)
+            # Convert the result to a base64-encoded image
+            _, buffer = cv2.imencode(".png", result_image)
             result_image_base64 = base64.b64encode(buffer).decode("utf-8")
 
             return render_template("result.html", result_image_base64=result_image_base64)
         else:
             return jsonify({"error": "Image processing failed"})
-    # except Exception as e:
-    #     return jsonify({"error": str(e)})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 if __name__ == "__main__":

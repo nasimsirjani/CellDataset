@@ -26,3 +26,14 @@ jobs:
         run: |
           curl -X POST http://localhost:8080/predict -F "image=@/data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif"
 
+      - name: containers
+        run: docker ps -a
+        
+      - name: directory
+        run: ls -l data/images/test
+        
+      - name: Check the application
+        run: |
+          curl -X POST http://localhost:8080/predict -F "image=@data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif"
+
+
