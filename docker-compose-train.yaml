@@ -8,8 +8,6 @@ services:
     volumes:
       - ./models:/app/models
       - ./results:/app/results
-    sysctls:
-      - kernel.shmmax=134217728  # Set the kernel parameter
     command: python src/train.py
     working_dir: /app
 
