@@ -2,9 +2,9 @@ import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 from torchvision.transforms import v2 as T
-from src.engine import train_one_epoch, evaluate
-import src.utils
-from src.data import CellDataset
+from engine import train_one_epoch, evaluate
+import utils
+from data import CellDataset
 import matplotlib.pyplot as plt
 from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
 
@@ -121,7 +121,6 @@ timestamp = current_time.strftime("%Y-%m-%d_%H-%M-%S")
 
 # Assuming 'model' is your PyTorch model
 torch.save(model.state_dict(), os.path.join(results_dir, f'model_{self.timestamp}.pth'))
-
 
 
 image_path = 'data/images/test/Huh7_Phase_A12_1_00d00h00m_1.tif'
