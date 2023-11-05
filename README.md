@@ -32,7 +32,9 @@ Before you begin, make sure you have Docker installed on your system. You can in
    cd CellDataset
 2. run the command docker-compose -f .\docker-compose-train.yaml up --build -d
 3. run the command docker-compose -f .\docker-compose-app.yaml up --build by running this command you can connect to the http://localhost:8080/process_image for online prediction
-
+4. run by kubernetes:
+   - kubectl apply -f training-deployment.yaml
+   - kubectl apply -f web-deployment.yaml
 
 
 
