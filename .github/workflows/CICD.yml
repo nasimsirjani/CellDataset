@@ -14,13 +14,16 @@ jobs:
 
       - name: Build and run docker-compose for preparing data and training
         run: |
+          # Add "set -e" to make the script exit on failure
+          set -e
+          
           docker-compose -f docker-compose-train.yaml build 
           docker-compose -f docker-compose-train.yaml up
           exit_code=$?
-              echo "Exit code: $exit_code"
-              if [ $exit_code -ne 0 ]; then
-                exit $exit_code
-              fi
+          echo "Exit code: $exit_code"
+          if [ $exit_code -ne 0 ]; then
+            exit $exit_code
+          fi
         working-directory: .
         continue-on-error: false
 
