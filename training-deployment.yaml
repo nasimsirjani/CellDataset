@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: training-deployment
+spec:
+  replicas: 1  # Adjust the number of replicas as needed
+  selector:
+    matchLabels:
+      app: training
+  template:
+    metadata:
+      labels:
+        app: training
+    spec:
+      volumes:
+      - name: models
+        hostPath:
+          path: /path/to/models
+      - name: results
+        hostPath:
+          path: /path/to/results
+      containers:
+      - name: training
+        image: celldataset:v1
+        workingDir: /app
+        command: ["python", "src/train.py"]
+        volumeMounts:
+        - name: models
+          mountPath: /app/models
+        - name: results
+          mountPath: /app/results
