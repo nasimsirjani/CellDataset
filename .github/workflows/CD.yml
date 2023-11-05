@@ -23,7 +23,10 @@ jobs:
           docker logs celldataset_web_1
           echo "Sleeping for 10 seconds for the application to initialize..."
           sleep 10
-          
+
+      - name: containers
+        run: docker ps -a
+        
       - name: directory
         run: ls -l data/images/test
         
