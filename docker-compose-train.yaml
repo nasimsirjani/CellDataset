@@ -1,0 +1,13 @@
+version: '3'
+services:
+  training:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: celldataset:v1
+    volumes:
+      - ./models:/app/models
+      - ./results:/app/results
+    command: python src/train.py
+    working_dir: /app
+
