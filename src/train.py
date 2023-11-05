@@ -59,7 +59,7 @@ data_loader = torch.utils.data.DataLoader(
     dataset,
     batch_size=1,
     shuffle=True,
-    num_workers=0,
+    num_workers=1,
     collate_fn=utils.collate_fn
 )
 
@@ -67,7 +67,7 @@ data_loader_test = torch.utils.data.DataLoader(
     dataset_test,
     batch_size=1,
     shuffle=False,
-    num_workers=0,
+    num_workers=1,
     collate_fn=utils.collate_fn
 )
 
