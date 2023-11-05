@@ -20,7 +20,7 @@ jobs:
       - name: Debugging info
         run: |
           echo "Check the logs of the container:"
-          docker logs celldataset_training_web_1
+          docker logs celldataset_web_1
           echo "Sleeping for 10 seconds for the application to initialize..."
           sleep 10
 
