@@ -1,5 +1,4 @@
 from typing import Dict, List, Optional, Tuple, Union
-
 import torch
 import torchvision
 from torch import nn, Tensor

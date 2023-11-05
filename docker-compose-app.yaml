@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: penguin_classification:v1
+    image: celldataset:v1
     ports:
       - "8080:8080"
     command: python src/test/test.py

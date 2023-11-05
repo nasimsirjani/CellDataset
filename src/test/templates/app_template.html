@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Processing</title>
+</head>
+<body>
+    <h1>Welcome to Image Processing</h1>
+    <form method="POST" action="/process_image" enctype="multipart/form-data">
+        <input type="file" name="image">
+        <button type="submit">Process Image</button>
+    </form>
+    {% if result_image %}
+    <h2>Processed Image</h2>
+    <img src="data:image/jpeg;base64,{{ result_image }}" alt="Processed Image">
+    {% endif %}
+</body>
+</html>
