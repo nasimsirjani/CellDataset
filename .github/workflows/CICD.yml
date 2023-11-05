@@ -17,6 +17,7 @@ jobs:
           docker-compose -f docker-compose-train.yaml build 
           docker-compose -f docker-compose-train.yaml up
         working-directory: .
+        continue-on-error: false
 
       - name: Archive results
         uses: actions/upload-artifact@v2
