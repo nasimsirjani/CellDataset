@@ -40,7 +40,7 @@ class CellDataset(torch.utils.data.Dataset):
                         points = points.reshape((-1, 1, 2))
 
                         # Draw the polygon on the image
-                        cv2.fillPoly(mask, [points], (object_id))  # (0, 255, 0) is the color in BGR format
+                        cv2.fillPoly(mask, [points], (object_id))
                         object_id += 1
             except:
                 continue
@@ -66,7 +66,8 @@ class CellDataset(torch.utils.data.Dataset):
 
         # instances are encoded as different colors
         obj_ids = torch.unique(mask)
-        # first id is the background, so remove it
+
+        # first id is the background
         obj_ids = obj_ids[1:]
         num_objs = len(obj_ids)
 
@@ -87,10 +88,11 @@ class CellDataset(torch.utils.data.Dataset):
 
         image_id = idx
         area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+
         # suppose all instances are not crowd
         iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
 
-        # Wrap sample and targets into torchvision tv_tensors:
+        # Wrap sample and targets into torchvision tv_tensors
         img = tv_tensors.Image(img)
 
         target = {}

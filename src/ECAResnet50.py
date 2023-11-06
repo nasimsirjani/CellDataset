@@ -1,10 +1,8 @@
-import torch.nn as nn
 import math
 import torch
 from torch import nn
 from torch.nn.parameter import Parameter
-from collections import OrderedDict
-from torchvision.ops.feature_pyramid_network import FeaturePyramidNetwork, LastLevelMaxPool
+
 
 class eca_layer(nn.Module):
     """Constructs a ECA module.
@@ -185,32 +183,6 @@ def eca_resnet50(k_size=[3, 3, 3, 3], num_classes=1000, pretrained=False):
     model.avgpool = nn.AdaptiveAvgPool2d(1)
     return model
 
-class TimmToVisionFPN(nn.Module):
-    def __init__(self, backbone):
-        super(TimmToVisionFPN, self).__init__()
-        self.backbone = backbone
-        self.out_channels = 256
-        self.in_channels_list = [256, 512, 1024, 2048]
-        self.fpn = FeaturePyramidNetwork(
-            in_channels_list=self.in_channels_list,
-            out_channels=self.out_channels,
-            extra_blocks=LastLevelMaxPool(),
-        )
 
-    def forward(self, x):
-        layer1 = self.backbone.conv1(x)
-        layer1 = self.backbone.bn1(layer1)
-        layer1 = self.backbone.relu(layer1)
-        layer1 = self.backbone.maxpool(layer1)
-        layer2 = self.backbone.layer1(layer1)
-        layer3 = self.backbone.layer2(layer2)
-        layer4 = self.backbone.layer3(layer3)
-        layer5 = self.backbone.layer4(layer4)
-        x = [layer1, layer2, layer3, layer4, layer5]
-        out = OrderedDict()
-        for i in range(len(x)-1):
-            out[str(i)] = x[i+1]
-        out = self.fpn(out)
-        return out
 
 
