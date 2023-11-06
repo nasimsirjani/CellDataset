@@ -10,6 +10,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Clean Docker
+        run: |
+          docker stop celldataset_web_1 || true
+          docker rm celldataset_web_1 || true
+          docker rmi celldataset_web_1 || true
+
       - name: Stage
         run: |
           docker-compose -f docker-compose-app.yaml up --build

@@ -20,7 +20,12 @@ This project aims to segment cells in an image by using MaskRCNN. It is designed
 ## Directories
 - data: this directory includes our dataset 
 - logs: this directory includes our training logs
-- models: this directory includes
+- models: this directory includes our models' checkpoints
+- notebook: this directory includes two .ipynb that one of them is about data visualization phase and the another one is about train-test phase
+- results: this directory includes of 2D images that shows the prediction of models for six random samples
+- src: this directory includes all necessary codes that we need
+- src/templates: this directory includes .html files for the app
+
 ## Getting Started
 
 ### Prerequisites
