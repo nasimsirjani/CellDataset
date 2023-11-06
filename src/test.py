@@ -24,15 +24,15 @@ checkpoint_file = 'models/maskrcnn_resnet50_fpn_2023-11-05_17-13-41.pth'
 # Load model
 model = get_model_instance_segmentation(name='maskrcnn_resnet50_fpn', num_classes=2)  # Adjust name and num_classes
 # Ensure the model is loaded on the CPU if no GPU is available
-# if not torch.cuda.is_available():
-#     model.load_state_dict(torch.load(checkpoint_file, map_location=torch.device('cpu')))
-# else:
-model.load_state_dict(torch.load(checkpoint_file))
+if not torch.cuda.is_available():
+    model.load_state_dict(torch.load(checkpoint_file, map_location=torch.device('cpu')))
+else:
+    model.load_state_dict(torch.load(checkpoint_file))
 model.eval()
 
 
 def process_image(image):
-    # try:
+    try:
         # Convert the input image to a PyTorch tensor
         image = torch.from_numpy(image).permute(2, 0, 1)
 
@@ -59,8 +59,8 @@ def process_image(image):
 
         return output_image
 
-    # except Exception as e:
-    #     return None
+    except Exception as e:
+        return None
 
 
 @app.route("/")
@@ -70,7 +70,7 @@ def index():
 
 @app.route("/process_image", methods=["POST"])
 def process_image_route():
-    # try:
+    try:
         # Extract image data from the POST request
         image_data = request.files["image"]
         image = cv2.imdecode(np.fromstring(image_data.read(), np.uint8), cv2.IMREAD_COLOR)
@@ -88,8 +88,8 @@ def process_image_route():
         else:
             return jsonify({"error": "Image processing failed"})
 
-    # except Exception as e:
-    #     return jsonify({"error": str(e)})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 if __name__ == "__main__":
