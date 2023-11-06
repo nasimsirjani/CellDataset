@@ -17,6 +17,10 @@ This project aims to segment cells in an image by using MaskRCNN. It is designed
 - Automated CI/CD pipeline using GitHub Actions
 - Heroku deployment for online prediction
 
+## Directories
+- data: this directory includes our dataset 
+- logs: this directory includes our training logs
+- models: this directory includes
 ## Getting Started
 
 ### Prerequisites
@@ -35,9 +39,6 @@ Before you begin, make sure you have Docker installed on your system. You can in
 4. run by kubernetes:
    - kubectl apply -f training-deployment.yaml
    - kubectl apply -f web-deployment.yaml
-
-
-
 
 
 
