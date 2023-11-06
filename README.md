@@ -44,6 +44,8 @@ Before you begin, make sure you have Docker installed on your system. You can in
 4. run by kubernetes:
    - kubectl apply -f training-deployment.yaml
    - kubectl apply -f web-deployment.yaml
+5. by triggering the .github/workflows/CICD training and deploying will happen automatically but because I did not have pgu cloud on which run it, it is time-consuming
+6. by triggering the .github/workflows/CICD
 
 
 

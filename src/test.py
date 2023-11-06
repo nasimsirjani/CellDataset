@@ -24,10 +24,10 @@ checkpoint_file = 'models/maskrcnn_resnet50_fpn_2023-11-05_17-13-41.pth'
 # Load model
 model = get_model_instance_segmentation(name='maskrcnn_resnet50_fpn', num_classes=2)  # Adjust name and num_classes
 # Ensure the model is loaded on the CPU if no GPU is available
-if not torch.cuda.is_available():
-    model.load_state_dict(torch.load(checkpoint_file, map_location=torch.device('cpu')))
-else:
-    model.load_state_dict(torch.load(checkpoint_file))
+# if not torch.cuda.is_available():
+#     model.load_state_dict(torch.load(checkpoint_file, map_location=torch.device('cpu')))
+# else:
+model.load_state_dict(torch.load(checkpoint_file))
 model.eval()
 
 
