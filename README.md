@@ -3,7 +3,7 @@
 Object segmentation in LIVECell dataset by using MaskRCNN with three different backbones:
   - maskrcnn_resnet50_fpn
   - maskrcnn_eca-resnet50_fpn
-  - askrcnn_se-resnet50_fpn
+  - maskrcnn_se-resnet50_fpn
     
 ## Introduction
 
